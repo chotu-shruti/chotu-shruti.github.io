@@ -7,6 +7,7 @@ var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
 var browserSync = require('browser-sync').create();
 const imagemin = require('gulp-imagemin');
+var htmlmin = require('gulp-htmlmin');
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -23,6 +24,14 @@ gulp.task('image', () =>
         .pipe(imagemin())
         .pipe(gulp.dest('img'))
 );
+
+
+// Html minification
+gulp.task('minifyhtml', function() {
+  return gulp.src('html/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./'));
+});
 
 // Copy third party libraries from /node_modules into /vendor
 gulp.task('vendor', function() {
@@ -104,7 +113,7 @@ gulp.task('js:minify', function() {
 gulp.task('js', ['js:minify']);
 
 // Default task
-gulp.task('default', ['css', 'js', 'vendor', 'image']);
+gulp.task('default', ['css', 'js', 'vendor', 'image','minifyhtml']);
 
 // Configure the browserSync task
 gulp.task('browserSync', function() {
