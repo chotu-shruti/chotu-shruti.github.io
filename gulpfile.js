@@ -6,6 +6,7 @@ var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
 var browserSync = require('browser-sync').create();
+const imagemin = require('gulp-imagemin');
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -15,6 +16,13 @@ var banner = ['/*!\n',
   ' */\n',
   ''
 ].join('');
+
+// Image minification
+gulp.task('image', () =>
+    gulp.src('img/**')
+        .pipe(imagemin())
+        .pipe(gulp.dest('img'))
+);
 
 // Copy third party libraries from /node_modules into /vendor
 gulp.task('vendor', function() {
@@ -96,7 +104,7 @@ gulp.task('js:minify', function() {
 gulp.task('js', ['js:minify']);
 
 // Default task
-gulp.task('default', ['css', 'js', 'vendor']);
+gulp.task('default', ['css', 'js', 'vendor', 'image']);
 
 // Configure the browserSync task
 gulp.task('browserSync', function() {
